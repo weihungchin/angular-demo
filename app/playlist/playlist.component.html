@@ -1,0 +1,73 @@
+<div class="container">
+
+    <div class="text-center mt-5 mb-4 pb-4">
+        <h3>My Playlist</h3>
+        <hr/>
+    </div>
+
+    <div class="clearfix col-lg-8 offset-lg-2 mt-5 col-md-10 offset-md-1" *ngIf="isFormShow">
+        <form #f="ngForm" nonvalidate (ngSubmit) = "addSong(f)">
+            <div class="form-group"
+                [ngClass] = "{'has-danger': f.form.controls.title?.invalid && (f.form.controls.title?.dirty 
+                ||
+                f.form.controls.title?.touched),
+                'has-success': f.form.controls.title?.valid && (f.form.controls.title?.dirty ||
+                f.form.controls.title?.touched)}">
+                <label for="title">Title :</label>
+                <input type="text" 
+                name="title" 
+                class="form-control" 
+                placeholder="Song title" 
+                [(ngModel)]="newSong.title" 
+                required
+                [ngClass] = "{'form-control-danger':f.form.controls.title?.touched}">
+
+                <div class="form-control-feedback" *ngIf="f.form.controls.title?.invalid && ( f.form.controls.title?.dirty || f.form.controls.title?.touched)">Song title is mandatory</div>
+
+            </div>
+
+            <div class="form-group"
+                 [ngClass] = "{'has-danger': f.form.controls.artist?.invalid && (f.form.controls.artist?.dirty 
+                ||
+                f.form.controls.artist?.touched),
+                'has-success': f.form.controls.artist?.valid && (f.form.controls.artist?.dirty ||
+                f.form.controls.artist?.touched)}"
+            >
+                <label for="artist">Artist :</label>
+                <input type="text" 
+                name="artist" 
+                class="form-control" 
+                placeholder="Artist name" 
+                [(ngModel)]="newSong.artist" 
+                pattern="^[A-Za-z.\s_-]+$"
+                minlength="3"
+                required
+                [ngClass] = "{'form-control-danger':f.form.controls.artist?.touched}"
+                >
+
+                 <div class="form-control-feedback" *ngIf="f.form.controls.artist?.invalid && ( f.form.controls.artist?.dirty || f.form.controls.artist?.touched)">Must be 3 alphabetic characters or more</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary pull-right" (click)="addSong(f)">Add</button>
+        </form>
+    </div>
+
+
+
+
+
+    <div class="clearfix"></div>
+    <div class="song-list col-lg-8 offset-lg-2 mt-5 col-md-10 offset-md-1 pb-5">
+        <div class="list-group">
+            <app-song [title]="item.title" [artist]="item.artist" *ngFor="let item of listOfSong" [song]="song"></app-song>
+        </div>
+    </div>
+
+
+
+    <div id="container-floating">
+        <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" (click)="isFormShow = !isFormShow">
+            <p class="plus">+</p>
+            <li class="edit fa fa-pencil"></li>
+        </div>
+    </div>
